@@ -1,0 +1,53 @@
+<nav class="navbar navbar-inverse bg-inverse">
+  <a style="color:deeppink;" class="navbar-brand" href="#">Coder Dashboard</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <span class="navbar-text">
+    Client: <%= current_client.f_name %> <%= current_client.l_name %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>
+  <span class="navbar-text">
+    Admin: <%= current_admin.f_name %> <%= current_admin.l_name %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>
+</nav>
+
+
+<h1>WELCOME TO THE CODER DASHBOARD</h1>
+<p></p>
+
+<h3>View Projects</h3>
+
+<table class="table table-striped" style="width:700px; margin-left:20px;">
+  <tr>
+      <th>Title</th>
+      <th>Project Type</th>
+      <th>Budget</th>
+      <th>Client</th>
+      <th></th>
+  </tr>
+  <% @projects.each do |p| %>
+	  <tr>
+	      <td><%=p.title%></td>
+	      <td><%=p.project_type%></td>
+	      <td><%=number_to_currency(p.budget)%></td>
+	      <td><%=p.client.f_name%></td>	      
+	      <td><a href="/projects/<%=p.id%>">View Details</a></td>
+	  </tr>
+  <% end %>
+</table>
+
+<hr>
+
+<h1>CREATE NEW PROJECT</h1>
+<br>
+<form action="/projects/create" method="post" style="margin-left:20px;">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    Title: <input type="text" name="title"><br><br>
+    Budget: $<input type="integer" name="budget">
+    Type: 
+    <select name="project_type">
+    	<option>Accelerate</option>
+     	<option>Startup</option>
+    	<option>Small Business</option>
+    	<option>Enterprise</option>
+    </select>
+    <br><br>
+   <input type="submit" value="Create Project">
+</form>

@@ -1,0 +1,43 @@
+<nav class="navbar navbar-inverse bg-inverse">
+  <a style="color:deeppink;" class="navbar-brand" href="/">Coder Dashboard</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <span class="navbar-text">
+    Client: <%= @project.client.f_name %> <%= @project.client.l_name %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>
+  <span class="navbar-text">
+    Admin: <%= current_admin.f_name %> <%= current_admin.l_name %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>
+  <span class="navbar-text">
+    Project: <%= @project.title %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>
+</nav>
+
+<h1> All Requirements under <%= @project.title %></h1>
+<br>
+
+<table class="table table-striped" style="width:1200px; margin-left:20px;">
+  <tr>
+      <th>Sprint</th>
+      <th>Requirement</th>
+      <th>Date Added</th>
+      <th>Expected Time (hr)</th>
+      <th>Actual Time (hr)</th>
+      <th>Status</th>
+      <th>Contract Amount</th>
+      <th></th>
+  </tr>
+  <% @requirements.each do |r| %>
+	  <tr>
+        <td><a href="/projects/<%= @project.id %>/sprints/<%= r.sprint_id %>"><%= r.sprint_id %></a></td>
+	      <td><%=r.statement%></td>
+        <td><%=r.created_at.strftime("%B %d, %Y")%></td>
+	      <td><%=r.expected_time%></td>
+        <td><%=r.actual_time%></td>
+	      <td><%=r.status%></td>
+        <td><%= number_to_currency(@project_rate * r.expected_time) %></td>   	
+        <td><a href="" class="btn btn-default" role="button">Start Requirement</a></td>
+        <td><a href="" class="btn btn-success" role="button">Approve Requirement</a></td>
+	  </tr>
+  <% end %>
+</table>
+
+

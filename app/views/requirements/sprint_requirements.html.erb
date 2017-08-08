@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-8 col-sm-push-2">
+      <h1 class="text-center"> Sprint No. <%= @sprint.id %> Requirements </h1>
+      <hr/>
+      <br/>
+    </div>
+  </div>
+
+  <div id="reqsRow" class="row">
+    <!-- REQUIREMENTS LOAD HERE -->
+
+  </div>
+</div>
+
+<table>
+  <div id="reqTemplate" style="display: none;">
+    <% @requirements.each do |r| %>
+      <tr>
+        <div class="col-sm-6 col-md-4 col-lg-3">
+          <div class="panel panel-default panel-pet">
+            <div class="panel-heading">
+              <h3 class="panel-title">Sprint No. <%= @sprint.id %></h3>
+            </div>
+            <div class="panel-body">
+              <div style="width: 100%;"><td><%=r.statement%></td></div>
+              <br/><br/>
+              <strong>Expected Time</strong>: <span class="expected_time"><td><%=r.expected_time%> hours</td></span><br/>
+              <strong>Actual Time</strong>: <span class="actual_time"><td><%=r.actual_time%> hours</td></span><br/>
+              <strong>Status</strong>: <span class="status"><td><%=r.status%></td></span><br/><br/>
+              <button class="btn btn-default" type="button" data-id="0"><td>Start Requirement</td></button>
+            </div>
+          </div>
+        </div>
+      </tr>
+    <% end %>
+  </div>
+</table>
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<script src="js/web3.min.js"></script>
+<script src="js/truffle-contract.js"></script>
+<script src="js/app.js"></script>

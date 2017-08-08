@@ -1,0 +1,31 @@
+<nav>
+  <a href="/projects">Go straight to projects</a>
+</nav>
+<div class="panel panel-default">
+   <div class="panel-heading"><h1>Welcome to CODER!</h1></div>
+    <div class="row">
+      <div class="col-sm-4">
+             <div class="panel panel-default">
+                 <div class="panel-heading"><h2>ADMIN</h2></div>
+                  <h3>Login</h3>
+                    <form action="/admins/login" method="post">
+                      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                      Email: <input type="text" name="email"><br><br>
+                      Password: <input type="password" name="password"><br><br>
+                      <input type="submit" value="Login">
+                    </form>
+                    <br>
+                    <h3>Register</h3>
+                    <form action="/admins/register" method="post">
+                      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                      First Name: <input type="text" name="user[first_name]"><br><br>
+                      Last Name: <input type="text" name="user[last_name]"><br><br>
+                      Email: <input type="text" name="user[email]"><br><br>
+                      Password: <input type="password" name="user[password]"><br><br>
+                      Confirm Password: <input type="password" name="user[password_confirmation]"><br><br>
+                      <input type="submit" value="Register">
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>

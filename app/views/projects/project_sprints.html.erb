@@ -1,0 +1,52 @@
+<nav class="navbar navbar-inverse bg-inverse">
+  <a style="color:deeppink;" class="navbar-brand" href="/">Coder Dashboard</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <span class="navbar-text">
+    Client: <%= @project.client.f_name %> <%= @project.client.l_name %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>
+  <span class="navbar-text">
+    Admin: <%= current_admin.f_name %> <%= current_admin.l_name %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>
+</nav>
+
+
+<h1><%= @project.title %> for <%= @project.client.f_name%></h1>
+<br>
+
+<h3>Sprints</h3>
+
+<table class="table table-striped" style="width:1200px; margin-left:20px;">
+  <tr>
+      <th>Sprint No. </th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Status</th>
+      <th>Percent Complete</th>
+      <th></th>
+  </tr>
+  <% @sprints.each do |s| %>
+	  <tr>
+	      <td><%=s.id%></td>
+	      <td><%=s.start_date.strftime("%B %d, %Y")%></td>
+        <td><%=s.end_date.strftime("%B %d, %Y")%></td>
+	      <td><%=s.status%></td>	
+        <td><%=s.progress%>%</td>              
+	      <td><a href="/projects/<%=@project.id%>/sprints/<%=s.id%>">View Requirements</a></td>
+	  </tr>
+  <% end %>
+</table>
+
+<hr>
+
+<h1>Add a New Sprint under <%= @project.title %></h1>
+<p></p>
+<br>
+<form action="/projects/<%= @project.id %>/create_sprint" method="post" style="margin-left:20px;">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    Start Date: <input type="date" name="start_date">
+    <br><br>
+    End Date: <input type="date" name="end_date">
+    <br><br>
+   <input type="hidden" name="project_id" value="<%=@project.id%>">
+   <input type="submit" value="Add Sprint">
+</form>
+

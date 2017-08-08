@@ -1,0 +1,61 @@
+<nav class="navbar navbar-inverse bg-inverse">
+  <a style="color:deeppink;" class="navbar-brand" href="/">Coder Dashboard</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <span class="nav-item">
+    <a class="nav-link" href="/projects/<%= @sprint.project_id %>">Back to Sprints</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>
+  <span class="navbar-text">
+    Client: <%= @sprint.project.client.f_name %> <%= @sprint.project.client.l_name %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>
+  <span class="navbar-text">
+    Admin: <%= current_admin.f_name %> <%= current_admin.l_name %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>
+  <span class="navbar-text">
+    Project: <%= @sprint.project.title %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>
+  <span class="nav-item">
+    <a class="nav-link" href="/projects/<%= @sprint.project_id %>/requirements">All Project Requirements</a>
+  </span>
+</nav>
+
+<h1> Sprint No. <%= @sprint.id %> Requirements </h1>
+<br>
+
+<h3>Requirements</h3>
+
+<table class="table table-striped" style="width:1200px; margin-left:20px;">
+  <tr>
+      <th>Requirement</th>
+      <th>Expected Time</th>
+      <th>Actual Time</th>
+      <th>Status</th>
+      <th>Contract Amount</th>
+      <th></th>
+  </tr>
+  <% @requirements.each do |r| %>
+	  <tr>
+	      <td><%=r.statement%></td>
+	      <td><%=r.expected_time%></td>
+        <td><%=r.actual_time%></td>
+	      <td><%=r.status%></td>
+        <td><%= number_to_currency(@project_rate * r.expected_time) %></td>  	
+	      <td><a href="/payments/<%=r.id%>/request_payment/<%=(@project_rate * r.expected_time)%>" class="btn btn-default" role="button">Start Requirement</a></td>
+        <td><a href="#" class="btn btn-success" role="button">Approve Requirement</a></td>
+	  </tr>
+  <% end %>
+</table>
+
+<hr>
+
+<h1>Add a New Requirement under Sprint No. <%= @sprint.id %></h1>
+<br>
+<form action="/projects/<%=@sprint.project_id%>/sprints/<%=@sprint.id%>/create_requirement" method="post" style="margin-left:20px;">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    Requirement: <input type="text" name="statement"> (Should start with: <i>"As a User, I would like to..."</i>)
+    <br><br>
+    Expected Time: <input type="integer" name="expected_time"> hours
+    <br><br>
+   <input type="hidden" name="project_id" value="<%=@sprint.project.id%>">
+   <input type="hidden" name="sprint_id" value="<%=@sprint.id%>">
+   <input type="submit" value="Add Requirement">
+</form>
+
