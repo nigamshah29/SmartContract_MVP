@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
 
 	def create
 		@p = Project.create(title:params[:title], project_type:params[:project_type], budget:params[:budget], admin_id:session[:admin_id], client_id:session[:client_id])
-      	redirect_to "/dashboard"
+      	redirect_to "/"
 	end
 
 	# def index

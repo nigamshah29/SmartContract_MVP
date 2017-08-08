@@ -1,3 +1,5 @@
+pragma solidity ^0.4.4;
+
 contract Coder {
 
   enum GameState {notStarted, inProgress, pendingApproval, requirementApproved}  //4 states that a "Requirement" object will go through
@@ -8,7 +10,7 @@ contract Coder {
   uint256 expected_hours;  //cumulative expected hours from all the tasks listed under the Requirement
   uint256 project_bill_rate;  //client bill rate for project type submitted (Accelerate, Startup, Small Business, Enterprise)
 
-  modifier onlyState(GameState expectedState) { if(expectedState == currentState) { _; } else { throw; } }
+  modifier onlyState(GameState expectedState) { if(expectedState == currentState) { _; } else { revert; } }
 
   //Constructor function to initialize smart contract
   function Coder(uint256 _expected_hours, uint256 _project_bill_rate) {
@@ -52,7 +54,7 @@ contract Coder {
   function payCoder() onlyState(GameState.requirementApproved) payable returns (bool){
     coderAdmin.send(this.balance * .75);
     coderUser.send(this.balance * .25);
-    currentState = GameState.notStarted
+    currentState = GameState.notStarted;
     return true;
   }
 
