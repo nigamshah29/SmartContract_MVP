@@ -29,7 +29,9 @@
       <th>Actual Time</th>
       <th>Status</th>
       <th>Contract Amount</th>
-      <th></th>
+      <th>Coder Action</th>
+      <th>Coder Action</th>
+      <th>Client Action</th>
   </tr>
   <% @requirements.each do |r| %>
 	  <tr>
@@ -38,8 +40,9 @@
         <td><%=r.actual_time%></td>
 	      <td><%=r.status%></td>
         <td><%= number_to_currency(@project_rate * r.expected_time) %></td>  	
-	      <td><a href="/payments/<%=r.id%>/request_payment/<%=(@project_rate * r.expected_time)%>" class="btn btn-default" role="button">Start Requirement</a></td>
-        <td><a href="#" class="btn btn-success" role="button">Approve Requirement</a></td>
+	      <td><a href="/payments/<%=r.id%>/request_payment/<%=(@project_rate * r.expected_time)%>" class="btn btn-default btn-start" role="button" data-id="<%=r.id%>" data-payment="<%= number_to_currency(@project_rate * r.expected_time) %>">Start Requirement</a></td>
+        <td><a href="#" class="btn btn-default btn-request" role="button">Requirement Complete</a></td>
+        <td><a href="#" class="btn btn-success btn-approve" role="button">Approve Requirement</a></td>
 	  </tr>
   <% end %>
 </table>

@@ -6,15 +6,15 @@ contract Coder {
   GameState public currentState;  //currentState variable that is set to the state the Requirement is in
   address public client;  //ETH wallet address for the client
   address public coderAdmin;  //ETH wallet address for the Coder project admin or PM
-  address public coderUser;  //ETH wallet address for the developer or worker executing on Requirement
+  // address public coderUser;  //ETH wallet address for the developer or worker executing on Requirement
   uint256 contract_amount; //expected_hours * project_bill_rate
 
   modifier onlyState(GameState expectedState) { if(expectedState == currentState) { _; } else { revert(); } }
 
   //Constructor function to initialize smart contract
-  function Coder(address _client, address _coderAdmin, address _coderUser, uint256 _contract_amount) {
+  function Coder(address _client, address _coderAdmin, uint256 _contract_amount) {
     client = _client;
-    coderUser = _coderUser;
+    // coderUser = _coderUser;
     coderAdmin = _coderAdmin;
     contract_amount = _contract_amount;
     currentState = GameState.notStarted;
@@ -45,6 +45,7 @@ contract Coder {
     coderAdmin.transfer(this.balance);
     currentState = GameState.notStarted;
     return true;
+    selfdestruct(client);
   }
 
   function getBalance() constant returns (uint256) {

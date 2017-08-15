@@ -7,8 +7,9 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-console.log('Hello World from Webpacker')
 
+console.log('Hello World from Webpacker')
+debugger;
 App = {
   web3Provider: null,
   contracts: {},
@@ -33,6 +34,9 @@ App = {
 
   //   return App.initWeb3();
   // },
+  init: function() {
+    debugger;
+  },
 
   initWeb3: function() {
     // Initialize web3 and set the provider to the testRPC.
@@ -57,33 +61,40 @@ App = {
       App.contracts.Coder.setProvider(App.web3Provider);
 
       // Use our contract to retrieve and mark the adopted pets.
-      return App.markAdopted();
+      // return App.markAdopted();
     });
     return App.bindEvents();
   },
 
   bindEvents: function() {
-    $(document).on('click', '.btn-adopt', App.handleAdopt);
+    debugger;
+    $(document).on('click', '.btn-start', this.handleStartRequirement/*(reqId, contract_amount)*/);
+    $(document).on('click', '.btn-request', App.handleRequestApproval);    
+    $(document).on('click', '.btn-approve', App.handleApproval);
   },
 
-  handleAdopt: function() {
+  handleStartRequirement: function(reqId, contract_amount) {
+    // inside here, this is the dom element
+    debugger;
     event.preventDefault();
+    const id = this.dataset.id;
+    const payment = this.dataset.payment;
 
-    var petId = parseInt($(event.target).data('id'));
+    var reqId = parseInt($(event.target).data('id'));
 
-    var adoptionInstance;
+    var coderInstance;
 
     web3.eth.getAccounts(function(error, accounts){
       if (error) {
         console.log(error);
       }
 
-      var account = accounts[0];
+      var coderAdmin = accounts[0];
 
-      App.contracts.Adoption.deployed().then(function(instance) {
-        adoptionInstance = instance;
+      App.contracts.Coder.deployed().then(function(instance) {
+        coderInstance = instance;
 
-        return adoptionInstance.adopt(petId, {from: account});
+        return coderInstance.startRequirement();
       }).then(function(result) {
         return App.markAdopted();
       }).catch(function(err) {
@@ -92,28 +103,69 @@ App = {
     });
   },
 
-  markAdopted: function(adopters, account) {
-    var adoptionInstance;
+  // markAdopted: function(adopters, account) {
+  //   var adoptionInstance;
 
-    App.contracts.Adoption.deployed().then(function(instance) {
-      adoptionInstance = instance;
+  //   App.contracts.Adoption.deployed().then(function(instance) {
+  //     adoptionInstance = instance;
 
-      return adoptionInstance.getAdopters.call();
-    }).then(function(adopters) {
-      for (i = 0; i < adopters.length; i++) {
-        if (adopters[i] !== '0x0000000000000000000000000000000000000000') {
-          $('.panel-pet').eq(i).find('button').text('Pending...').attr('disabled', true);
-        }
-      }
-    }).catch(function(err) {
-      console.log(err.message);
-    });  
-  }
+  //     return adoptionInstance.getAdopters.call();
+  //   }).then(function(adopters) {
+  //     for (i = 0; i < adopters.length; i++) {
+  //       if (adopters[i] !== '0x0000000000000000000000000000000000000000') {
+  //         $('.panel-pet').eq(i).find('button').text('Pending...').attr('disabled', true);
+  //       }
+  //     }
+  //   }).catch(function(err) {
+  //     console.log(err.message);
+  //   });  
+  // }
 
 };
 
 $(function() {
-  $(window).load(function() {
-    App.init();
-  });
+  App.init();
+  $(window).load(function() {});
 });
+
+const Eth = require('ethjs-query')
+const EthContract = require('ethjs-contract')
+const address = '0xb351027c5d80ff2509c68528685578ab17bd9517'
+
+function startApp(web3) {
+  const eth = new Eth(web3.currentProvider)
+  const contract = new EthContract(eth)
+  initContract(contract)
+}
+
+function initContract (contract) {
+  const MiniToken = contract(abi)
+  const miniToken = MiniToken.at(address)
+  listenForClicks(miniToken)
+}
+
+function listenForClicks (miniToken) {
+  var button = document.querySelector('button.btn-approve')
+  button.addEventListener('click', function() {
+    var inWei = web3.toWei('10', 'ether')
+    miniTokentoken.transfer(toAddress, value, { from: addr })
+    .then(function (txHash) {
+      console.log('Transaction sent')
+      console.dir(txHash)
+      waitForTxToBeMined(txHash)
+    })
+    .catch(console.error)
+  })
+}
+
+async function waitForTxToBeMined (txHash) {
+  let txReceipt
+  while (!txReceipt) {
+    try {
+      txReceipt = await eth.getTransactionReceipt(txHash)
+    } catch (err) {
+      return indicateFailure(err)
+    }
+  }
+  indicateSuccess()
+}
